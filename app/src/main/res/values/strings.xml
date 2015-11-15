@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ResetTest</string>
+    <string name="app_name">Y7 Test</string>
     <string name="action_settings">Settings</string>
     <string name="base_URL">https://www.whatsbeef.net/</string>
     <string name="method_guid">wabz/guide.php?start=%s</string>
