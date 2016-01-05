@@ -1,7 +1,10 @@
 package android.hamid.com.au.y7;
 
+import android.app.Activity;
 import android.hamid.com.au.y7.helper.ListAdapter;
 import android.hamid.com.au.y7.mappings.Movie;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private ListAdapter adapter;
     private List<Movie> movieList;
     private ProgressBar progressBar;
-    private boolean loadingMore = false;
+    private boolean isWaiting4Data = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
 
         movieList = new ArrayList<>();
+        //This listener is to detect if user navigates to the bottom
+        //Native methods of SDK listen to navigation to the top same as
+        //current Yahoo and Gmail apps
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -51,13 +57,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem,
                                  int visibleItemCount, int totalItemCount) {
+            //We check if there is an internet connection then we call api(it needs an extra permission:( )                         
+                    if (isConnected()) {                 
                 //Load more data if user scrolls to the bottom
                 int lastInScreen = firstVisibleItem + visibleItemCount;
-                if ((lastInScreen == totalItemCount) && !(loadingMore)) {
+                if ((lastInScreen == totalItemCount) && !(isWaiting4Data)) {
                     showFetchingProgress(true);
                     loadMovies();
+                     } 
                 }
-            }
+           }
         });
     }
 
@@ -121,6 +130,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void showFetchingProgress(boolean isFetching) {
         progressBar.setVisibility(isFetching ? View.VISIBLE : View.GONE);
-        loadingMore = isFetching;
+        isWaiting4Data = isFetching;
+    }
+    
+    public boolean isConnected() {
+        // we check if there is network connection then we call api
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
