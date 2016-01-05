@@ -26,6 +26,7 @@ import java.util.Map;
  */
 public class ApiUtils {
     public static final String UTF8 = "UTF-8";
+    // RequestQueue of Volley will manage multi API calls and deliver right respond to right request
     private final static RequestQueue myMainRequestQueue = Volley
             .newRequestQueue(ApiApplication.getAppContext());
 
@@ -42,6 +43,7 @@ public class ApiUtils {
                 try {
                     String jsonString = new String(networkResponse.data, UTF8);
                     JSONObject jsonObject = new JSONObject(jsonString);
+                    //We read it with every API calls because it can be updated consequently
                     int count = jsonObject.getInt("count");
                     if (count - 1 > MainActivity.pageNumber) {
                         MainActivity.pageNumber++;
