@@ -16,7 +16,7 @@ public class Movie {
 	private String myChannel;
 	@SerializedName("rating")
 	private String myRating;
-
+// We dont need setters because gson does everythin by itself.
 	public String getMyName() {
 		return myName;
 	}
