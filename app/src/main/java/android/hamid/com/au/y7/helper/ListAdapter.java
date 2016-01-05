@@ -21,6 +21,7 @@ import java.util.List;
 public class ListAdapter extends BaseAdapter {
     private Activity activity;
     private List<Movie> movieList;
+    private String RATE_MA = "MA";
 
     public ListAdapter(Activity activity, List<Movie> movieList) {
         this.activity = activity;
@@ -58,7 +59,8 @@ public class ListAdapter extends BaseAdapter {
         end_time.setText(movieList.get(position).getMyEndTime());
         channel.setText(movieList.get(position).getMyChannel());
         rating.setText(movieList.get(position).getMyRating());
-        if(movieList.get(position).getMyRating().equals("MA")){
+        //Just an example of customized ListView
+        if(movieList.get(position).getMyRating().equals(RATE_MA)){
             rating.setTextColor(getColor(ApiApplication.getAppContext(), R.color.red));
         }
 
